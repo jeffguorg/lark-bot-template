@@ -15,29 +15,21 @@ type Message struct {
 }
 
 type ChallengeMessage struct {
-	Message
+	Type      string
+	Token     string
 	Challenge string
 }
 
-type ChatEvent struct {
+type RichTextEvent struct {
 	Type     string
 	MsgType  string
 	ChatType string `json:"chat_type"`
 
-	UserOpenID    string
-	OpenChatID    string
-	OpenMessageID string
-}
+	UserOpenID    string `json:"user_open_id"`
+	OpenChatID    string `json:"open_chat_id"`
+	OpenMessageID string `json:"open_message_id"`
 
-type TextEvent struct {
-	ChatEvent
-
-	Text string
-}
-
-type RichTextEvent struct {
-	TextEvent
-
+	Text  string
 	Title string
 }
 
