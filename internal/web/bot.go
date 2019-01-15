@@ -22,7 +22,7 @@ func NewBotHandler(b bot.Bot) func(res http.ResponseWriter, event RichTextEvent)
 		if ses, ok := userSessions[event.UserOpenID+event.OpenChatID]; ok {
 			var chatRequest = bot.ChatRequest{
 				SessionID: ses,
-				Message:   event.Text,
+				Message:   b.Regularization(event.Text),
 			}
 			chatResponse, err = b.Chat(chatRequest)
 			if err != nil {

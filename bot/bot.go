@@ -12,4 +12,5 @@ type ChatResponse struct {
 
 type Bot interface {
 	Chat(req ChatRequest) (*ChatResponse, error)
+	Regularization(msg string) string
 }

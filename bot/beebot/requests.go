@@ -93,7 +93,11 @@ func (bot BeeBot) Sign(req *ChatRequest) {
 		if ind > 0 {
 			queryString += "&"
 		}
-		queryString += k + "=" + url.QueryEscape((*req)[k])
+		if k == "Utterance" || k == "Timestamp" {
+			queryString += k + "=" + replacer.Replace(url.QueryEscape((*req)[k]))
+		} else {
+			queryString += k + "=" + (*req)[k]
+		}
 	}
 	strToSign += replacer.Replace(url.QueryEscape(queryString))
 	lstSignStr = strToSign

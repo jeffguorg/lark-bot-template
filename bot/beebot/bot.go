@@ -15,6 +15,21 @@ type BeeBot struct {
 	InstanceID string
 }
 
+func must(o interface{}, err error) interface{} {
+	return o
+}
+
+var regexReplacer = []*regexp.Regexp{
+	must(regexp.Compile("<at.*>.*</at>")).(*regexp.Regexp),
+}
+
+func (b *BeeBot) Regularization(msg string) string {
+	for _, replacer := range regexReplacer {
+		msg = replacer.ReplaceAllString(msg, "")
+	}
+	return msg
+}
+
 func (b *BeeBot) Chat(req bot.ChatRequest) (*bot.ChatResponse, error) {
 	var response *ChatResponse
 	var err error
