@@ -13,7 +13,7 @@ import (
 
 var userSessions = make(map[string]string)
 
-func NewBotHandler(b bot.Bot) func(res http.ResponseWriter, event RichTextEvent) {
+func NewBotHandler(b bot.Bot) func(http.ResponseWriter, RichTextEvent) {
 	return func(res http.ResponseWriter, event RichTextEvent) {
 		var (
 			chatResponse *bot.ChatResponse
