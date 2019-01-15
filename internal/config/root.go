@@ -31,4 +31,5 @@ func OnCobraInitialized() {
 	}
 	log.Println("Unmarshalling viper configuration from", viper.ConfigFileUsed())
 	viper.Unmarshal(&Configuration)
+	Configuration.Bot.Beebot.InstanceID = viper.GetString("bot.beebot.instance_id")
 }
