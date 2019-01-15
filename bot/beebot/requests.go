@@ -131,7 +131,6 @@ func (bot BeeBot) Send(req *ChatRequest) (*ChatResponse, error) {
 
 	chatResponse := &ChatResponse{}
 	json.Unmarshal(responseBody, chatResponse)
-	log.Println(string(responseBody))
 	if ind := strings.IndexRune(chatResponse.Message, ':'); ind >= 0 {
 		log.Println(chatResponse.Message[ind+1:], lstSignStr)
 		log.Println(lstSignStr == chatResponse.Message[ind+1:])

@@ -26,7 +26,7 @@ func NewBotHandler(b bot.Bot) func(res http.ResponseWriter, event RichTextEvent)
 			}
 			chatResponse, err = b.Chat(chatRequest)
 			if err != nil {
-				log.Println(err)
+				log.Println("failed to get response from bot", err)
 				return
 			}
 			if chatResponse.SessionID != "" {
@@ -39,7 +39,7 @@ func NewBotHandler(b bot.Bot) func(res http.ResponseWriter, event RichTextEvent)
 			}
 			chatResponse, err = b.Chat(chatRequest)
 			if err != nil {
-				log.Println(err)
+				log.Println("failed to get response from bot", err)
 				return
 			}
 			if chatResponse.SessionID != "" {

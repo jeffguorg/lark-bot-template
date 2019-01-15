@@ -2,6 +2,7 @@ package beebot
 
 import (
 	"fmt"
+	"log"
 	"regexp"
 	"strings"
 
@@ -54,10 +55,13 @@ func (b *BeeBot) Chat(req bot.ChatRequest) (*bot.ChatResponse, error) {
 	}
 
 	for _, msg := range response.Messages {
-		if matched, err := regexp.MatchString("\n$", chatResponse.Message); err != nil {
+		if matched, err := regexp.MatchString("\n$", chatResponse.Message); err == nil {
 			if matched && len(chatResponse.Message) > 0 {
 				chatResponse.Message += "\n\n"
 			}
+		} else {
+			log.Println("error processing response", err)
+			return nil, err
 		}
 		switch msg.Type {
 		case "Text":
@@ -77,7 +81,6 @@ func (b *BeeBot) Chat(req bot.ChatRequest) (*bot.ChatResponse, error) {
 		default:
 			chatResponse.Message += msg.Type
 		}
-
 	}
-	return chatResponse, err
+	return chatResponse, nil
 }
