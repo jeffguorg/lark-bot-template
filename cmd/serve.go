@@ -29,6 +29,7 @@ var serveCmd = &cobra.Command{
 	Use:   "serve",
 	Short: "serve a webhook http server",
 	Run: func(cmd *cobra.Command, args []string) {
+		log.Println("Serving server on", listenAddr)
 		if err := web.Serve(listenAddr); err != nil {
 			log.Fatalln(err)
 		}

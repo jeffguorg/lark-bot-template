@@ -3,12 +3,14 @@ package web
 import (
 	"net/http"
 
+	"github.com/go-chi/chi/middleware"
+
 	"github.com/go-chi/chi"
 )
 
 var router = func() *chi.Mux {
 	r := chi.NewRouter()
-
+	r.Use(middleware.Logger)
 	return r
 }()
 

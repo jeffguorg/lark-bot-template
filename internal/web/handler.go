@@ -5,16 +5,50 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+
+	"github.com/jeffguorg/lark-bot-template/bot/beebot"
 )
 
 type Message struct {
-	Token     string
+	Type  string
+	Token string
+}
+
+type ChallengeMessage struct {
+	Message
 	Challenge string
 }
 
-type ChallengeResponse struct {
-	Challenge string
+type ChatEvent struct {
+	Type     string
+	MsgType  string
+	ChatType string `json:"chat_type"`
+
+	UserOpenID    string
+	OpenChatID    string
+	OpenMessageID string
 }
+
+type TextEvent struct {
+	ChatEvent
+
+	Text string
+}
+
+type RichTextEvent struct {
+	TextEvent
+
+	Title string
+}
+
+type EventMessage struct {
+	Message
+	Timestamp float64 `json:"ts,string"`
+	Event     RichTextEvent
+}
+
+var bbot = &beebot.BeeBot{}
+var BotHandler = NewBotHandler(bbot)
 
 func webhook(res http.ResponseWriter, req *http.Request) {
 	body, err := ioutil.ReadAll(req.Body)
@@ -27,18 +61,30 @@ func webhook(res http.ResponseWriter, req *http.Request) {
 		res.WriteHeader(400)
 		return
 	}
-	if len(msg.Challenge) > 0 {
-		var response = ChallengeResponse{
-			Challenge: msg.Challenge,
+	log.Println("message type is", msg.Type)
+	if msg.Type == "url_verification" {
+		var challengeMessage ChallengeMessage
+		if err := json.Unmarshal(body, &challengeMessage); err != nil {
+			log.Println(err)
+			res.WriteHeader(400)
+			return
 		}
-		responseBuffer, _ := json.Marshal(&response)
-		res.Write(responseBuffer)
+		URLVerification(res, challengeMessage)
 		return
-	} else {
-		log.Println(string(body))
+	} else if msg.Type == "event_callback" {
+		log.Println("entering event callback")
+		var textMsg EventMessage
+		log.Println("body is", string(body))
+		if err := json.Unmarshal(body, &textMsg); err != nil {
+			log.Println(err)
+			res.WriteHeader(400)
+			return
+		}
+		log.Println("handle the request to repeat handler")
+		BotHandler(res, textMsg.Event)
 	}
 }
 
 func init() {
-	router.Get("/", webhook)
+	router.Post("/", webhook)
 }

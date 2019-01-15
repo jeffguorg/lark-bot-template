@@ -18,6 +18,13 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/jeffguorg/lark-bot-template/internal/background"
+	"github.com/jeffguorg/lark-bot-template/internal/web"
+
+	"github.com/spf13/viper"
+
+	"github.com/jeffguorg/lark-bot-template/internal/config"
+
 	"github.com/spf13/cobra"
 )
 
@@ -37,4 +44,10 @@ func Execute() {
 		fmt.Println(err)
 		os.Exit(1)
 	}
+}
+func init() {
+	viper.AddConfigPath("/etc")
+	viper.AddConfigPath(".")
+	viper.SetConfigName("bot")
+	cobra.OnInitialize(config.OnCobraInitialized, background.OnCobraInitialized, web.BotOnInitialized)
 }
