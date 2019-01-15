@@ -49,11 +49,11 @@ func NewBotHandler(b bot.Bot) func(res http.ResponseWriter, event RichTextEvent)
 
 		if event.ChatType == "group" {
 			if err := background.LarkClient.SendMessage(lark.NewSimpleGroupMessage(event.OpenChatID, chatResponse.Message)); err != nil {
-				log.Println(err)
+				log.Println("failed to send message", err)
 			}
 		} else if event.ChatType == "private" {
 			if err := background.LarkClient.SendMessage(lark.NewSimplePrivateMessage(event.UserOpenID, chatResponse.Message)); err != nil {
-				log.Println(err)
+				log.Println("failed to send message", err)
 			}
 		}
 

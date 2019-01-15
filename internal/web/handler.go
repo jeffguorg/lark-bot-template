@@ -65,7 +65,7 @@ func webhook(res http.ResponseWriter, req *http.Request) {
 	if msg.Type == "url_verification" {
 		var challengeMessage ChallengeMessage
 		if err := json.Unmarshal(body, &challengeMessage); err != nil {
-			log.Println(err)
+			log.Println("failed to unmarshal challenge message", err)
 			res.WriteHeader(400)
 			return
 		}
@@ -76,7 +76,7 @@ func webhook(res http.ResponseWriter, req *http.Request) {
 		var textMsg EventMessage
 		log.Println("body is", string(body))
 		if err := json.Unmarshal(body, &textMsg); err != nil {
-			log.Println(err)
+			log.Println("failed to unmarshal text message", err)
 			res.WriteHeader(400)
 			return
 		}

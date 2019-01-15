@@ -31,13 +31,13 @@ var httpclient = http.Client{
 func (lark *Client) Post(url string, body io.Reader) []byte {
 	req, err := http.NewRequest("POST", url, body)
 	if err != nil {
-		log.Println(err)
+		log.Println("failed to create request", err)
 		return nil
 	}
 	req.Header.Add("Authorization", "Bearer "+lark.Token.TenantAccessToken)
 	res, err := httpclient.Do(req)
 	if err != nil {
-		log.Println(err)
+		log.Println("failed to send post http request", err)
 		return nil
 	}
 	if res.StatusCode/100 != 2 {

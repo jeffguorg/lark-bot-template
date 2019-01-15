@@ -33,12 +33,12 @@ func (lark *Client) RefreshTenantAccessToken() {
 
 	res, err := http.Post(refreshURL.String(), "", requestBufIO)
 	if err != nil {
-		log.Println(err)
+		log.Println("failed to post http request", err)
 		return
 	}
 	responseBuf, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		log.Println(err)
+		log.Println("failed to read response body", err)
 		return
 	}
 
